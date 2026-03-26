@@ -1,0 +1,154 @@
+#!/bin/sh
+#
+# PROVIDE: <APP_SERVICE_NAME>
+# REQUIRE: LOGIN NETWORKING
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="<APP_SERVICE_NAME>"
+rcvar="${name}_enable"
+
+load_rc_config "${name}"
+
+: ${gallery_app_enable:="NO"}
+: ${gallery_app_user:="<APP_USER>"}
+: ${gallery_app_group:="<APP_GROUP>"}
+: ${gallery_app_root:="<APP_ROOT>"}
+: ${gallery_app_rundir:="${gallery_app_root}/run"}
+: ${gallery_app_wrapper:="${gallery_app_root}/bin/<APP_SLUG>-wrapper.sh"}
+: ${gallery_app_binary:="${gallery_app_root}/bin/<APP_SLUG>"}
+: ${gallery_app_log:="/var/log/<APP_SLUG>.log"}
+: ${gallery_app_pidfile:="${gallery_app_rundir}/${name}.pid"}
+: ${gallery_app_alert_config:="/usr/local/etc/<APP_SLUG>-alert.conf"}
+
+command="/usr/sbin/daemon"
+pidfile="${gallery_app_pidfile}"
+procname="${command}"
+required_files="${gallery_app_wrapper} ${gallery_app_binary} ${gallery_app_root}/.env"
+command_args="-f -H -r -P ${gallery_app_pidfile} -t ${name} -o ${gallery_app_log} /usr/bin/su -m ${gallery_app_user} -c ${gallery_app_wrapper}"
+extra_commands="rebuild rollback smokecheck"
+rebuild_cmd="${name}_rebuild"
+rebuild_precmd="${name}_prestart"
+: ${gallery_app_rebuild_script:="/usr/local/libexec/<APP_SLUG>-rebuild.sh"}
+rollback_cmd="${name}_rollback"
+rollback_precmd="${name}_prestart"
+: ${gallery_app_rollback_script:="/usr/local/libexec/<APP_SLUG>-rollback.sh"}
+smokecheck_cmd="${name}_smokecheck"
+smokecheck_precmd="${name}_prestart"
+: ${gallery_app_smoke_script:="/usr/local/libexec/<APP_SLUG>-smoke-check.sh"}
+
+start_precmd="${name}_prestart"
+stop_cmd="${name}_stop"
+
+gallery_app_prestart()
+{
+    install -d -o "${gallery_app_user}" -g "${gallery_app_group}" -m 755 "${gallery_app_root}/bin"
+    install -d -o "${gallery_app_user}" -g "${gallery_app_group}" -m 755 "${gallery_app_rundir}"
+    touch "${gallery_app_log}"
+    chown "${gallery_app_user}:${gallery_app_group}" "${gallery_app_log}"
+    chmod 640 "${gallery_app_log}"
+
+    if [ -r "${gallery_app_alert_config}" ]; then
+        set -a
+        . "${gallery_app_alert_config}"
+        set +a
+    fi
+}
+
+gallery_app_rebuild()
+{
+    if [ ! -x "${gallery_app_rebuild_script}" ]; then
+        echo "${gallery_app_rebuild_script} is missing or not executable." >&2
+        return 1
+    fi
+
+    "${gallery_app_rebuild_script}"
+}
+
+gallery_app_rollback()
+{
+    if [ ! -x "${gallery_app_rollback_script}" ]; then
+        echo "${gallery_app_rollback_script} is missing or not executable." >&2
+        return 1
+    fi
+
+    "${gallery_app_rollback_script}"
+}
+
+gallery_app_smokecheck()
+{
+    if [ ! -x "${gallery_app_smoke_script}" ]; then
+        echo "${gallery_app_smoke_script} is missing or not executable." >&2
+        return 1
+    fi
+
+    "${gallery_app_smoke_script}" "http://127.0.0.1:8080"
+}
+
+gallery_app_stop()
+{
+    supervisor_pid=""
+    child_pids=""
+
+    if [ -f "${gallery_app_pidfile}" ]; then
+        supervisor_pid=$(cat "${gallery_app_pidfile}" 2>/dev/null || true)
+    fi
+
+    child_pids=$(pgrep -f "^${gallery_app_binary}$" || true)
+
+    if [ -z "${supervisor_pid}" ] && [ -z "${child_pids}" ]; then
+        echo "${name} is not running."
+        return 0
+    fi
+
+    echo "Stopping ${name}."
+
+    if [ -n "${supervisor_pid}" ]; then
+        kill -TERM "${supervisor_pid}" 2>/dev/null || true
+    fi
+
+    if [ -n "${child_pids}" ]; then
+        kill -TERM ${child_pids} 2>/dev/null || true
+    fi
+
+    i=0
+    while [ "${i}" -lt 10 ]; do
+        alive=0
+
+        if [ -n "${supervisor_pid}" ] && kill -0 "${supervisor_pid}" 2>/dev/null; then
+            alive=1
+        fi
+
+        if [ -n "${child_pids}" ]; then
+            for pid in ${child_pids}; do
+                if kill -0 "${pid}" 2>/dev/null; then
+                    alive=1
+                fi
+            done
+        fi
+
+        if [ "${alive}" -eq 0 ]; then
+            break
+        fi
+
+        sleep 1
+        i=$((i + 1))
+    done
+
+    if [ -n "${supervisor_pid}" ] && kill -0 "${supervisor_pid}" 2>/dev/null; then
+        kill -KILL "${supervisor_pid}" 2>/dev/null || true
+    fi
+
+    if [ -n "${child_pids}" ]; then
+        for pid in ${child_pids}; do
+            if kill -0 "${pid}" 2>/dev/null; then
+                kill -KILL "${pid}" 2>/dev/null || true
+            fi
+        done
+    fi
+
+    rm -f "${gallery_app_pidfile}"
+}
+
+run_rc_command "$1"

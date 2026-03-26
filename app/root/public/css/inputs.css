@@ -1,0 +1,53 @@
+.form-box {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    position: relative;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: var(--sub-text-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    background: var(--input-bg);
+    border: 1px solid #444;
+    color: var(--text-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 10px;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: #005f9e;
+}
+
+.close-form-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: var(--sub-text-color);
+    cursor: pointer;
+}

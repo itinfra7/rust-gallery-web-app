@@ -1,0 +1,33 @@
+#!/bin/sh
+# PROVIDE: gallery_app_watchdog
+# REQUIRE: LOGIN zerotier
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=gallery_app_watchdog
+rcvar=gallery_app_watchdog_enable
+pidfile=/var/run/${name}.pid
+child_pidfile=/var/run/${name}.child.pid
+procname=/usr/sbin/daemon
+command=/usr/sbin/daemon
+command_args="-P ${pidfile} -p ${child_pidfile} -r -f /usr/local/libexec/gallery-app-watchdog.sh"
+start_precmd=gallery_app_watchdog_precmd
+stop_postcmd=gallery_app_watchdog_stop_postcmd
+
+load_rc_config $name
+: ${gallery_app_watchdog_enable:="NO"}
+
+gallery_app_watchdog_precmd()
+{
+    install -d -o root -g wheel -m 755 /var/db/gallery-app-watchdog
+    return 0
+}
+
+gallery_app_watchdog_stop_postcmd()
+{
+    rm -f "${pidfile}"
+    rm -f "${child_pidfile}"
+}
+
+run_rc_command "$1"

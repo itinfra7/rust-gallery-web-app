@@ -1,0 +1,52 @@
+.card-info {
+    padding: 10px;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--input-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    min-height: 20px;
+}
+
+.info-text {
+    flex: 1;
+    font-size: 14px;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+    margin-right: 5px;
+    line-height: 1.4;
+}
+
+.title-text {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.tags-text {
+    font-size: 12px;
+    color: var(--sub-text-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.tag-item {
+    background-color: var(--tag-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tag-item:hover {
+    background-color: var(--tag-hover);
+    color: var(--accent-color);
+}

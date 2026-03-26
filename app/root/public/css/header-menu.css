@@ -1,0 +1,73 @@
+.menu-item {
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: var(--btn-color);
+    color: var(--btn-text);
+    transition: background-color 0.2s, transform 0.1s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-item:hover {
+    background-color: var(--btn-hover);
+}
+
+.menu-item.active {
+    background-color: #007acc;
+    color: white;
+}
+
+.legal-btn {
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--sub-text-color);
+    padding: 6px 8px;
+    background-color: transparent;
+    transition: color 0.2s;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    border-radius: 4px;
+}
+
+.legal-btn:hover {
+    color: var(--text-color);
+    text-decoration: underline;
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    fill: var(--btn-text);
+}
+
+.action-btn {
+    background-color: var(--btn-color);
+    color: var(--btn-text);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+    text-decoration: none;
+}
+
+.action-btn:hover {
+    background-color: var(--btn-hover);
+}
+
+.danger-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: var(--danger-hover);
+}

@@ -1,0 +1,2 @@
+ALTER TABLE images DROP COLUMN IF EXISTS title;
+DROP INDEX IF EXISTS idx_images_title;

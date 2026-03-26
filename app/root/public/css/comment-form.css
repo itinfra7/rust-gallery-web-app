@@ -1,0 +1,49 @@
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comment-input {
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 1px solid #444;
+    color: var(--text-color);
+    padding: 8px;
+    border-radius: 4px;
+    resize: none;
+    height: 60px;
+    font-family: inherit;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #007acc;
+}
+
+.comment-submit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.char-count {
+    font-size: 11px;
+    color: #666;
+}
+
+.comment-btn {
+    background-color: #007acc;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.comment-btn:hover {
+    background-color: #005f9e;
+}

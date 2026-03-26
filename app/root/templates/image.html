@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ meta_description }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:description" content="{{ meta_description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:image" content="{{ og_image_url }}">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:alt" content="{{ image_alt }}">
+    {% if has_image_dimensions %}
+    <meta property="og:image:width" content="{{ image_width }}">
+    <meta property="og:image:height" content="{{ image_height }}">
+    {% endif %}
+    <meta property="og:site_name" content="<PUBLIC_DOMAIN>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ og_image_url }}">
+    <meta name="twitter:image:alt" content="{{ image_alt }}">
+    <script type="application/ld+json">{{ structured_data_json|safe }}</script>
+    <script type="application/ld+json">{{ breadcrumb_json|safe }}</script>
+    {% include "favicons.html" %}
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0d1014;
+            --panel: #171d24;
+            --border: #2a333d;
+            --text: #f2f6fb;
+            --subtext: #aeb8c4;
+            --accent: #79c0ff;
+            --tag: #222a33;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+            background: linear-gradient(180deg, #0b0f14 0%, #121922 100%);
+            color: var(--text);
+        }
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 20px 48px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 18px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .breadcrumb {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 18px;
+            color: var(--subtext);
+            font-size: 0.95rem;
+        }
+        .breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .breadcrumb-separator {
+            opacity: 0.65;
+        }
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 24px;
+            align-items: start;
+        }
+        .image-panel, .meta-panel {
+            background: rgba(23, 29, 36, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+        }
+        .image-panel img {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #000;
+        }
+        .meta-panel {
+            padding: 20px;
+        }
+        h1 {
+            margin: 0 0 16px;
+            font-size: 1.9rem;
+            line-height: 1.2;
+        }
+        .meta-list {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .meta-item {
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--subtext);
+        }
+        .value {
+            color: var(--text);
+            word-break: break-word;
+        }
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag {
+            display: inline-flex;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: var(--tag);
+            color: var(--text);
+            font-size: 0.92rem;
+            text-decoration: none;
+        }
+        .notice {
+            margin-top: 20px;
+            color: var(--subtext);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        @media (max-width: 920px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 720px) {
+            .page {
+                padding: 14px 12px 28px;
+            }
+            .breadcrumb {
+                margin-bottom: 12px;
+                font-size: 0.88rem;
+            }
+            .hero {
+                gap: 14px;
+            }
+            .image-panel, .meta-panel {
+                border-radius: 14px;
+            }
+            .meta-panel {
+                padding: 16px;
+            }
+            h1 {
+                font-size: 1.38rem;
+                margin-bottom: 14px;
+            }
+            .meta-list {
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+            .meta-item {
+                padding-bottom: 10px;
+            }
+            .tag {
+                padding: 6px 10px;
+                font-size: 0.86rem;
+            }
+            .notice {
+                margin-top: 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a class="back-link" href="/">Home</a>
+            <span class="breadcrumb-separator">/</span>
+            <span>{{ breadcrumb_label }}</span>
+        </nav>
+        <div class="hero">
+            <section class="image-panel">
+                <img src="{{ image_url }}" alt="{{ image_alt }}"{% if has_image_dimensions %} width="{{ image_width }}" height="{{ image_height }}"{% endif %}>
+            </section>
+            <aside class="meta-panel">
+                <h1>{{ page_title }}</h1>
+                <div class="meta-list">
+                    <div class="meta-item">
+                        <span class="label">Image ID</span>
+                        <span class="value">{{ image_id }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Upload Date</span>
+                        <span class="value">{{ upload_date }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Likes</span>
+                        <span class="value">{{ like_count }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Comments</span>
+                        <span class="value">{{ comment_count }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">Media Type</span>
+                        <span class="value">{% if is_animated %}Animated WebP{% else %}Static WebP{% endif %}</span>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <span class="label">Tags</span>
+                    <div class="tag-list">
+                        {% if tag_links.len() > 0 %}
+                            {% for tag in tag_links %}
+                                <a class="tag" href="{{ tag.url }}">{{ tag.name }}</a>
+                            {% endfor %}
+                        {% else %}
+                            <span class="value">No tags</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="notice">
+                    This server-rendered image page exists to give each gallery image a stable, crawlable document URL.
+                </p>
+            </aside>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,38 @@
+:root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --sub-text-color: #aaaaaa;
+    --accent-color: #ffffff;
+    --input-bg: #333;
+    --btn-color: #444;
+    --btn-hover: #555;
+    --btn-text: #ffffff;
+    --danger-color: #d32f2f;
+    --danger-hover: #b71c1c;
+    --tag-bg: #2a2a2a;
+    --tag-hover: #3a3a3a;
+    --drop-zone-bg: #252525;
+    --drop-zone-border: #555;
+    --drop-zone-hover: #333;
+    --heart-color: #e0e0e0;
+    --heart-active: #ff4081;
+}
+
+body.light-mode {
+    --bg-color: #ffffff;
+    --card-bg: #f4f4f4;
+    --text-color: #121212;
+    --sub-text-color: #555555;
+    --accent-color: #000000;
+    --input-bg: #e0e0e0;
+    --btn-color: #e0e0e0;
+    --btn-hover: #d0d0d0;
+    --btn-text: #121212;
+    --tag-bg: #e0e0e0;
+    --tag-hover: #d0d0d0;
+    --drop-zone-bg: #f9f9f9;
+    --drop-zone-border: #ccc;
+    --drop-zone-hover: #eee;
+    --heart-color: #555;
+}

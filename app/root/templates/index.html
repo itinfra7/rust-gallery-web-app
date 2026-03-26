@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="https://<PUBLIC_DOMAIN>/">
+    <meta name="description" content="<PUBLIC_DOMAIN> - A curated collection of images.">
+    <meta name="keywords" content="gallery, images, art, photography">
+    <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta property="og:title" content="<PUBLIC_DOMAIN>">
+    <meta property="og:description" content="Explore the <PUBLIC_DOMAIN> image collection.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://<PUBLIC_DOMAIN>/">
+    <meta property="og:image" content="{{ og_image_url }}">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:alt" content="{{ og_image_alt }}">
+    {% if has_og_image_dimensions %}
+    <meta property="og:image:width" content="{{ og_image_width }}">
+    <meta property="og:image:height" content="{{ og_image_height }}">
+    {% endif %}
+    <meta property="og:site_name" content="<PUBLIC_DOMAIN>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ og_image_url }}">
+    <meta name="twitter:image:alt" content="{{ og_image_alt }}">
+    <script type="application/ld+json">{{ structured_data_json|safe }}</script>
+    <link rel="alternate" type="application/rss+xml" title="<PUBLIC_DOMAIN> RSS Feed" href="https://<PUBLIC_DOMAIN>/rss.xml">
+    <title><PUBLIC_DOMAIN></title>
+    {% include "favicons.html" %}
+    <link rel="stylesheet" href="/public/css/variables.css">
+    <link rel="stylesheet" href="/public/css/global.css">
+    <link rel="stylesheet" href="/public/css/header-layout.css">
+    <link rel="stylesheet" href="/public/css/header-menu.css">
+    <link rel="stylesheet" href="/public/css/search.css">
+    <link rel="stylesheet" href="/public/css/gallery-grid.css">
+    <link rel="stylesheet" href="/public/css/card-core.css">
+    <link rel="stylesheet" href="/public/css/card-content.css">
+    <link rel="stylesheet" href="/public/css/card-meta.css">
+    <link rel="stylesheet" href="/public/css/card-admin.css">
+    <link rel="stylesheet" href="/public/css/modal-base.css">
+    <link rel="stylesheet" href="/public/css/modal-layout.css">
+    <link rel="stylesheet" href="/public/css/modal-sidebar.css">
+    <link rel="stylesheet" href="/public/css/related-images.css">
+    <link rel="stylesheet" href="/public/css/legal-modal.css">
+    <link rel="stylesheet" href="/public/css/inputs.css">
+    <link rel="stylesheet" href="/public/css/file-upload.css">
+    <link rel="stylesheet" href="/public/css/autocomplete.css">
+    <link rel="stylesheet" href="/public/css/comment-list.css">
+    <link rel="stylesheet" href="/public/css/comment-form.css">
+    <link rel="stylesheet" href="/public/css/toast.css">
+    <link rel="stylesheet" href="/public/css/mobile.css?v=1">
+    <meta name="yandex-verification" content="<YANDEX_VERIFICATION_TOKEN>" />
+    <meta name="msvalidate.01" content="<BING_SITE_VERIFICATION_TOKEN>" />
+    <meta name="naver-site-verification" content="<NAVER_SITE_VERIFICATION_TOKEN>" />
+    <style>
+        .card-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body data-admin="{{ is_admin }}">
+
+    <div class="top-left-bar">
+        <div class="menu-item active" id="sortDesc" onclick="applySort('desc')" data-i18n="sortDesc">Newest</div>
+        <div class="menu-item" id="sortAsc" onclick="applySort('asc')" data-i18n="sortAsc">Oldest</div>
+        <div class="menu-item" id="sortPopular" onclick="applySort('popular')" data-i18n="sortPopular">Popular</div>
+        <div class="menu-item" id="sortComments" onclick="applySort('comments')" data-i18n="sortComments">Comments</div>
+        <div class="menu-item theme-toggle" onclick="toggleTheme()">
+            <svg class="theme-icon" viewBox="0 0 24 24">
+                <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+            </svg>
+        </div>
+        <div class="legal-btn" onclick="openLegalModal()" data-i18n="legalBtn">Legal</div>
+    </div>
+
+    <div class="top-bar">
+        {% if is_admin %}
+            <button class="action-btn danger-btn" onclick="deleteSelectedImages()" data-i18n="deleteSelected">Delete Selected</button>
+            <button class="action-btn" onclick="openUploadModal()" data-i18n="uploadImage">Upload Image</button>
+            <button class="action-btn" onclick="window.location.href='/dashboard'" data-i18n="dashboard">Dashboard</button>
+            <button class="action-btn" onclick="logout()" data-i18n="logout">Logout</button>
+        {% else %}
+            <button class="action-btn" onclick="openLoginModal()" data-i18n="login">Login</button>
+        {% endif %}
+    </div>
+
+    <h1><PUBLIC_DOMAIN></h1>
+
+    <div class="search-container">
+        <div class="search-wrapper">
+            <svg class="search-icon-help" id="searchHelpIcon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+            </svg>
+            <div class="autocomplete-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search tags..." autocomplete="off">
+            </div>
+            <button id="searchClearBtn" class="search-clear-btn">&times;</button>
+        </div>
+
+        <div class="search-tooltip" id="searchTooltip">
+            <h4>Search Tips</h4>
+            <div class="tooltip-row">
+                <span class="code-snippet">cat, dog</span>
+                <span class="tooltip-desc">Find images with <b>BOTH</b> tags</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="code-snippet">-car</span>
+                <span class="tooltip-desc"><b>EXCLUDE</b> images with 'car'</span>
+            </div>
+            <div class="tooltip-row">
+                <span class="code-snippet">cat, -dog</span>
+                <span class="tooltip-desc">Cats <b>WITHOUT</b> dogs</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-info">
+        <span id="totalCountDisplay" data-count="{{ total_count }}">Total {{ total_count }} images</span>
+    </div>
+
+    <div class="gallery-container" id="galleryContainer">
+        <div class="gallery-column">
+            {% for img in images %}
+                <div class="card">
+                    <div class="card-inner" onclick="if (window.openImageModal) { openImageModal({{ loop.index0 }}); }">
+                        <a class="card-link" href="{{ img.page_url }}" onclick="if (window.openImageModal) { event.preventDefault(); event.stopPropagation(); openImageModal({{ loop.index0 }}); }">
+                            {% if img.is_animated %}
+                                <div class="play-icon">
+                                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                            {% endif %}
+                            <img class="card-img" src="{{ img.thumb_url }}" alt="{{ img.alt_text }}" loading="lazy">
+                        </a>
+                    </div>
+                    <div class="card-info">
+                        <div class="meta-row">
+                            <div class="card-date">{{ img.date }}</div>
+                            <div class="meta-right">
+                                <div class="comment-indicator">
+                                    <span class="comment-count">{{ img.comment_count }}</span>
+                                    <svg class="comment-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                </div>
+                                <div class="heart-container {% if img.is_liked %}liked{% endif %}">
+                                    <span class="heart-count">{{ img.like_count }}</span>
+                                    <svg class="heart-icon" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-text tags-text">
+                                {% if img.tags.len() > 0 %}
+                                    {% for tag in img.tags %}
+                                        <span class="tag-item">{{ tag }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    No Tags
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="empty-state" id="emptyState" style="display: none;">
+        <h2 data-i18n="noImages">No images found.</h2>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-btn" onclick="closeImageModal()">&times;</span>
+        <div class="nav-btn prev-btn" onclick="changeImage(-1)">&#10094;</div>
+        <div class="nav-btn next-btn" onclick="changeImage(1)">&#10095;</div>
+
+        <div class="modal-content-wrapper" id="modalWrapper">
+            <div class="modal-image-area">
+                <div class="loader" id="imageLoader"></div>
+                <img class="modal-content" id="modalImage" src="" alt="" draggable="false">
+            </div>
+            <div class="modal-sidebar">
+                <div class="modal-meta-row">
+                    <div class="modal-date" id="modalDate"></div>
+                    <div class="heart-container" id="modalHeartBtn">
+                        <span class="heart-count" id="modalHeartCount">0</span>
+                        <svg class="heart-icon" viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="modal-tags" id="modalTags"></div>
+
+                <div class="comments-section">
+                    <div class="comments-header" data-i18n="commentsHeader">Comments</div>
+                    <div class="comment-list" id="commentList"></div>
+                    <div class="comment-form">
+                        <textarea id="commentInput" class="comment-input" maxlength="100" placeholder="Write a comment (max 100 chars)..."></textarea>
+                        <div class="comment-submit-row">
+                            <span class="char-count" id="charCount">0/100</span>
+                            <button class="comment-btn" onclick="submitComment()" data-i18n="commentPostBtn">Post</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="related-images-section">
+                    <h3 data-i18n="relatedImages">Related Images</h3>
+                    <div class="related-images-grid" id="relatedImages"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="form-box">
+            <span class="close-form-btn" onclick="closeLoginModal()">&times;</span>
+            <h2 style="text-align:center; margin-top:0;" data-i18n="loginTitle">Admin Access</h2>
+            <div class="form-group">
+                <label>ID</label>
+                <input type="text" id="loginId">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPass">
+            </div>
+            <div class="form-group">
+                <label>Key</label>
+                <input type="password" id="loginKey">
+            </div>
+            <button class="submit-btn" onclick="submitLogin()" data-i18n="authenticate">Authenticate</button>
+        </div>
+    </div>
+
+    <div id="uploadModal" class="modal">
+        <div class="form-box">
+            <span class="close-form-btn" onclick="closeUploadModal()">&times;</span>
+            <h2 style="text-align:center; margin-top:0;" data-i18n="uploadTitle">Upload Image</h2>
+            <div class="drop-zone" id="dropZone">
+                <svg class="drop-icon" viewBox="0 0 24 24">
+                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                </svg>
+                <span class="drop-text" id="dropText" data-i18n="dropText">Drag & Drop files here or Click</span>
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+            </div>
+            <button class="submit-btn" onclick="submitUpload()" data-i18n="uploadBtn">Upload</button>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+                <div class="progress-text" id="progressText">Starting...</div>
+            </div>
+        </div>
+    </div>
+
+    {% include "legal_modal.html" %}
+
+    <script>
+        const initialImages = [
+            {% for img in images %}
+            {
+                id: "{{ img.id }}",
+                page_url: "{{ img.page_url }}",
+                media_url: "{{ img.media_url }}",
+                thumb_url: "{{ img.thumb_url }}",
+                name: "{{ img.name }}",
+                thumb: "{{ img.thumb }}",
+                alt_text: "{{ img.alt_text }}",
+                is_animated: {{ img.is_animated }},
+                tags: [{% for tag in img.tags %}"{{ tag }}",{% endfor %}],
+                date: "{{ img.date }}",
+                like_count: {{ img.like_count }},
+                comment_count: {{ img.comment_count }},
+                is_liked: {{ img.is_liked }}
+            },
+            {% endfor %}
+        ];
+        const initialTotalCount = {{ total_count }};
+    </script>
+    <script type="module" src="/public/js/main.js?v=11"></script>
+</body>
+</html>

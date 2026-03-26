@@ -1,0 +1,77 @@
+.modal-sidebar {
+    width: 300px;
+    background: rgba(30, 30, 30, 0.5);
+    border-left: 1px solid #444;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #e0e0e0;
+    overflow-y: auto;
+    border-radius: 4px;
+}
+
+.modal-sidebar h2 {
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: left;
+    color: #ffffff;
+}
+
+.modal-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-sidebar .modal-date {
+    color: #aaaaaa;
+    font-size: 14px;
+}
+
+.modal-sidebar .heart-count {
+    color: #aaaaaa;
+    font-size: 12px;
+}
+
+.modal-sidebar .heart-icon {
+    stroke: #e0e0e0;
+}
+
+.modal-sidebar .heart-container.liked .heart-icon {
+    fill: #ff4081;
+    stroke: #ff4081;
+}
+
+.modal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-tag-item {
+    background-color: #333;
+    color: #e0e0e0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.modal-tag-item:hover {
+    background-color: #555;
+    color: #ffffff;
+}
+
+@media (max-width: 800px) {
+    .modal-sidebar {
+        width: 100%;
+        height: auto;
+        border-left: none;
+        border-top: 1px solid #444;
+    }
+}

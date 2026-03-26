@@ -1,0 +1,78 @@
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow: hidden;
+}
+
+.modal.show {
+    opacity: 1;
+}
+
+.modal-content {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    transition: transform 0.1s linear;
+    cursor: zoom-in;
+    user-select: none;
+    z-index: 10;
+}
+
+.modal-content.zoomed {
+    max-width: none;
+    max-height: none;
+    cursor: grab;
+    transition: none;
+}
+
+.modal-content.zoomed:active {
+    cursor: grabbing;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.2s;
+    line-height: 1;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 50px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    z-index: 1001;
+    padding: 20px;
+    user-select: none;
+    transition: color 0.2s, transform 0.2s;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+.nav-btn:hover {
+    color: #fff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
