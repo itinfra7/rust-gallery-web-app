@@ -1,5 +1,7 @@
 # Gallery Web App
 
+<img width="966" height="877" alt="1" src="https://github.com/user-attachments/assets/355736b1-3cbd-4b99-bb00-8887c4fb3363" />
+<br>
 This is a gallery website I built and decided to share as a public example.
 
 ## Layout
@@ -84,3 +86,14 @@ Replace the `<...>` placeholders before using them.
 - `app/root/migrations/`
 - `web/nginx/nginx.conf`
 - `web/alerts/`
+
+## Screenshots
+
+<img width="966" height="877" alt="1" src="https://github.com/user-attachments/assets/355736b1-3cbd-4b99-bb00-8887c4fb3363" />
+<img width="966" height="877" alt="2" src="https://github.com/user-attachments/assets/aa2cc51c-2a60-43b9-bd98-a63851cd68fa" />
+<img width="966" height="877" alt="3" src="https://github.com/user-attachments/assets/dcd09345-ebb1-480c-a98d-8208f2dbcae8" />
+<img width="966" height="10647" alt="4" src="https://github.com/user-attachments/assets/b8a0dae0-893b-45a7-b354-b1d089aa0e71" />
+
+## License
+
+MIT, by itinfra7 from GitHub.
